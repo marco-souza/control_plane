@@ -17,4 +17,19 @@ defmodule ControlPlane.RSSFixtures do
 
     source
   end
+
+  @doc """
+  Generate a execution_log.
+  """
+  def execution_log_fixture(attrs \\ %{}) do
+    {:ok, execution_log} =
+      attrs
+      |> Enum.into(%{
+        details: "some details",
+        status: "some status"
+      })
+      |> ControlPlane.RSS.create_execution_log()
+
+    execution_log
+  end
 end
