@@ -18,6 +18,20 @@ defmodule ControlPlaneWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/sources", SourceLive.Index, :index
+    live "/sources/new", SourceLive.Form, :new
+    live "/sources/:id", SourceLive.Show, :show
+    live "/sources/:id/edit", SourceLive.Form, :edit
+  end
+
+  scope "/rss", ControlPlaneWeb do
+    pipe_through :browser
+
+    live "/sources", SourceLive.Index, :index
+    live "/sources/new", SourceLive.Form, :new
+    live "/sources/:id", SourceLive.Show, :show
+    live "/sources/:id/edit", SourceLive.Form, :edit
   end
 
   # Other scopes may use custom stacks.

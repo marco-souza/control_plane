@@ -31,42 +31,107 @@ defmodule ControlPlaneWeb.Layouts do
     default: nil,
     doc: "the current [scope](https://phoenix.hexdocs.pm/scopes.html)"
 
+  attr :id, :string, default: "menu-drawer"
+
   slot :inner_block, required: true
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://phoenix.hexdocs.pm/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </header>
+    <div class="drawer lg:drawer-open">
+      <input id={@id} type="checkbox" class="drawer-toggle" value={true} />
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
-        {render_slot(@inner_block)}
+      <div class="drawer-side is-drawer-close:overflow-visible">
+        <label for={@id} aria-label="close sidebar" class="drawer-overlay"></label>
+        <div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+          <ul class="menu flex">
+            <button
+              class="is-drawer-close:tooltip is-drawer-close:tooltip-right btn btn-ghost px-1"
+              data-tip="Acme Org."
+            >
+              <!-- Home icon -->
+              <div class="avatar avatar-online avatar-placeholder mx-auto">
+                <div class="bg-neutral text-neutral-content size-8 rounded-full">
+                  <span class="text-sm">A</span>
+                </div>
+              </div>
+
+              <span class="is-drawer-close:hidden">
+                Acme Org.
+                <.icon
+                  name="hero-chevron-down"
+                  class="my-2 inline-block size-4"
+                />
+              </span>
+            </button>
+          </ul>
+
+          <!-- Sidebar content here -->
+          <ul class="menu grow w-full">
+            <li>
+              <button
+                class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Homepage"
+              >
+                <!-- Home icon -->
+                <.icon
+                  name="hero-home"
+                  class="my-2 inline-block size-4"
+                />
+                <span class="is-drawer-close:hidden">Homepage</span>
+              </button>
+            </li>
+
+            <!-- List item -->
+            <li>
+              <button
+                class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Settings"
+              >
+                <.icon
+                  name="hero-wrench-screwdriver"
+                  class="my-2 inline-block size-4"
+                />
+                <span class="is-drawer-close:hidden">Settings</span>
+              </button>
+            </li>
+
+            <div class="flex-1" />
+
+            <span class="is-drawer-close:hidden">
+              <.theme_toggle />
+            </span>
+
+            <div class="divider" />
+
+            <li>
+              <label
+                for={@id}
+                aria-label="open sidebar"
+                class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Expand"
+              >
+                <.icon
+                  name="hero-chevron-double-right"
+                  class="size-4 hidden is-drawer-close:inline-block"
+                />
+                <.icon
+                  name="hero-chevron-double-left"
+                  class="size-4 inline-block is-drawer-close:hidden"
+                />
+                <span class="is-drawer-close:hidden">Collapse</span>
+              </label>
+            </li>
+          </ul>
+        </div>
       </div>
-    </main>
+
+      <div class="drawer-content">
+        <!-- Page content here -->
+        <div class="p-4">
+          {render_slot(@inner_block)}
+        </div>
+      </div>
+    </div>
 
     <.flash_group flash={@flash} />
     """
@@ -136,7 +201,7 @@ defmodule ControlPlaneWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
       >
-        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100 mx-auto" />
       </button>
 
       <button
@@ -144,7 +209,7 @@ defmodule ControlPlaneWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
       >
-        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100 mx-auto" />
       </button>
 
       <button
@@ -152,7 +217,7 @@ defmodule ControlPlaneWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
       >
-        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100 mx-auto" />
       </button>
     </div>
     """
