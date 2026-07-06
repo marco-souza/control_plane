@@ -6,6 +6,8 @@ defmodule ControlPlane.RSS.Source do
   @foreign_key_type :binary_id
   schema "sources" do
     field :url, :string
+    # minutes
+    field :interval, :integer, default: 1
 
     timestamps(type: :utc_datetime)
   end
@@ -13,7 +15,7 @@ defmodule ControlPlane.RSS.Source do
   @doc false
   def changeset(source, attrs) do
     source
-    |> cast(attrs, [:url])
+    |> cast(attrs, [:url, :interval])
     |> validate_required([:url])
   end
 end

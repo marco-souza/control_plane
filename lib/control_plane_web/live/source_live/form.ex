@@ -15,6 +15,7 @@ defmodule ControlPlaneWeb.SourceLive.Form do
 
       <.form for={@form} id="source-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:url]} type="text" label="Url" />
+        <.input field={@form[:interval]} type="text" label="Update interval (in minutes)" />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Source</.button>
           <.button navigate={return_path(@return_to, @source)}>Cancel</.button>

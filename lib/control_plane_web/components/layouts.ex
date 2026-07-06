@@ -42,27 +42,30 @@ defmodule ControlPlaneWeb.Layouts do
 
       <div class="drawer-side is-drawer-close:overflow-visible">
         <label for={@id} aria-label="close sidebar" class="drawer-overlay"></label>
-        <div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+        <div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64 py-2">
           <ul class="menu flex">
-            <button
-              class="is-drawer-close:tooltip is-drawer-close:tooltip-right btn btn-ghost px-1"
-              data-tip="Acme Org."
-            >
-              <!-- Home icon -->
-              <div class="avatar avatar-online avatar-placeholder mx-auto">
-                <div class="bg-neutral text-neutral-content size-8 rounded-full">
-                  <span class="text-sm">A</span>
+            <li>
+              <button
+                class="is-drawer-close:tooltip is-drawer-close:tooltip-right btn btn-ghost px-2"
+                data-tip="Acme Org."
+              >
+                <!-- Home icon -->
+                <div class="avatar avatar-online avatar-placeholder mx-auto">
+                  <div class="bg-neutral text-neutral-content size-6 rounded-full">
+                    <span class="text-sm">P</span>
+                  </div>
                 </div>
-              </div>
 
-              <span class="is-drawer-close:hidden">
-                Acme Org.
+                <span class="is-drawer-close:hidden">
+                  Personal
+                </span>
+
                 <.icon
                   name="hero-chevron-down"
-                  class="my-2 inline-block size-4"
+                  class="my-2 inline-block size-4 is-drawer-close:hidden"
                 />
-              </span>
-            </button>
+              </button>
+            </li>
           </ul>
 
           <!-- Sidebar content here -->

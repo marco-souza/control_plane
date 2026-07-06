@@ -22,6 +22,7 @@ defmodule ControlPlaneWeb.SourceLive.Index do
         row_click={fn {_id, source} -> JS.navigate(~p"/sources/#{source}") end}
       >
         <:col :let={{_id, source}} label="Url">{source.url}</:col>
+        <:col :let={{_id, source}} label="Update Interval">{source.interval} min</:col>
         <:action :let={{_id, source}}>
           <div class="sr-only">
             <.link navigate={~p"/sources/#{source}"}>Show</.link>
