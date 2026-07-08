@@ -37,17 +37,23 @@ defmodule ControlPlane.RSS.XML do
     Logger.info("[xml] fetching xml")
 
     case Req.get(normalized_url) do
-      {:ok, req: %{status: 200, body: body}} ->
-        # TODO: check content type header
-        Logger.info("[xml] fetched xml")
+      {:ok, %Req.Response{status: 200, body: body, headers: headers}} ->
+        case headers["content-type"] do
+          "application/rss+xml" ->
+            Logger.info("[xml] fetched rss xml")
+
+          contentType ->
+            Logger.warning("[xml] fetched with wrong content-type: '#{contentType}'")
+        end
+
         {:ok, body}
 
-      {:ok, req: %{status: 404}} ->
-        Logger.info("[xml] not found")
+      {:ok, %Req.Response{status: 404}} ->
+        Logger.warning("[xml] not found")
         {:error, :not_found}
 
       {:error, reason} ->
-        Logger.info("[xml] failed to fetch: #{inspect(reason)}")
+        Logger.error("[xml] failed to fetch: #{inspect(reason)}")
         {:error, reason}
     end
   end
