@@ -2,11 +2,11 @@ defmodule ControlPlane.RSS do
   @moduledoc """
   The RSS context.
   """
-
   import Ecto.Query, warn: false
   alias ControlPlane.Repo
 
   alias ControlPlane.RSS.Source
+  alias ControlPlane.RSS.Feed
 
   @doc """
   Returns the list of sources.
@@ -50,9 +50,14 @@ defmodule ControlPlane.RSS do
 
   """
   def create_source(attrs) do
-    %Source{}
-    |> Source.changeset(attrs)
-    |> Repo.insert()
+    output =
+      %Source{}
+      |> Source.changeset(attrs)
+      |> Repo.insert()
+
+    with {:ok, source} <- output do
+      Feed.Supervisor.start_worker(source)
+    end
   end
 
   @doc """

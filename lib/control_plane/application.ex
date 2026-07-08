@@ -10,6 +10,9 @@ defmodule ControlPlane.Application do
     children = [
       ControlPlaneWeb.Telemetry,
       ControlPlane.Repo,
+      ## RSS Feed collectors
+      ControlPlane.RSS.Feed.Supervisor,
+      ControlPlane.RSS.Feed.StartupWorkers,
       {Ecto.Migrator,
        repos: Application.fetch_env!(:control_plane, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:control_plane, :dns_cluster_query) || :ignore},
