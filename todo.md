@@ -6,9 +6,19 @@ user should be able to:
 
 - [x] add `sources` CRUD
 - [x] add `rss_execution_log` CRUD
-- [ ] add `posts` CRUD
-  - [ ] add `/feed` View
-- [ ] add `FeedWorker` to fetch, parse and persist posts
+- [x] add `XML` to fetch and parse RSS 2.0 (sweet_xml)
+- [x] add `FeedWorker` to fetch, parse and persist posts
+  - [x] crate worker dynamic supervisor
+  - [x] fetch sources
+  - [x] validate body feched
+  - [x] update and add test
+  - [ ] integrate with `execution_log`
+  - [ ] add `posts` CRUD
+  - [ ] parse posts
+  - [ ] integrate with `posts`
+  - [ ] ensure uniqness for `posts`
+- [ ] validate `sources` at insertion
+- [ ] add `/feed` View
 
 Data Workflows:
 
