@@ -16,6 +16,6 @@ defmodule ControlPlane.RSS.ExecutionLog do
   def changeset(execution_log, attrs) do
     execution_log
     |> cast(attrs, [:status, :details])
-    |> validate_required([:status, :details])
+    |> validate_required([:status])
   end
 end
