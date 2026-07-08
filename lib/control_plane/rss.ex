@@ -50,14 +50,13 @@ defmodule ControlPlane.RSS do
 
   """
   def create_source(attrs) do
-    output =
-      %Source{}
-      |> Source.changeset(attrs)
-      |> Repo.insert()
+    %Source{}
+    |> Source.changeset(attrs)
+    |> Repo.insert()
+  end
 
-    with {:ok, source} <- output do
-      Feed.Supervisor.start_worker(source)
-    end
+  def start_worker(source) do
+    Feed.Supervisor.start_worker(source)
   end
 
   @doc """

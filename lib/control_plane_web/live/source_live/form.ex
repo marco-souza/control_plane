@@ -80,10 +80,21 @@ defmodule ControlPlaneWeb.SourceLive.Form do
   defp save_source(socket, :new, source_params) do
     case RSS.create_source(source_params) do
       {:ok, source} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Source created successfully")
-         |> push_navigate(to: return_path(socket.assigns.return_to, source))}
+        socket =
+          case RSS.start_worker(source) do
+            {:ok, _} ->
+              put_flash(socket, :info, "Worker successfully started")
+
+            _ ->
+              socket
+          end
+
+        socket =
+          socket
+          |> put_flash(:info, "Source created successfully")
+          |> push_navigate(to: return_path(socket.assigns.return_to, source))
+
+        {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}

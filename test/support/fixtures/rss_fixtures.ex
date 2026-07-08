@@ -26,7 +26,7 @@ defmodule ControlPlane.RSSFixtures do
       attrs
       |> Enum.into(%{
         details: "some details",
-        status: "some status"
+        status: :started
       })
       |> ControlPlane.RSS.create_execution_log()
 
