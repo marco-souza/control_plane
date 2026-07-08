@@ -3,6 +3,7 @@ defmodule ControlPlane.RSS.Feed.Worker do
 
   use GenServer
 
+  alias ControlPlane.RSS.XML
   alias ControlPlane.RSS.Source
 
   def start_link(%Source{} = source) do
@@ -23,21 +24,21 @@ defmodule ControlPlane.RSS.Feed.Worker do
   def handle_info(:fetch, %Source{} = source) do
     Logger.info("[feed][worker] fetch content for #{source.url}")
 
-    normalized_url = normalize_url(source)
+    case XML.fetch(source.url) do
+      {:ok, body} ->
+        case XML.valid_rss?(body) do
+          true ->
+            # TODO: implement XML parsing
+            # TODO: add execution logs
+            # TODO: create posts
+            Logger.info("[feed][worker] is RSS valid")
 
-    case Req.get(normalized_url) do
-      {:ok, %{status: 200, body: body}} ->
-        Logger.info("[feed][worker] content fetched: #{inspect(body)}")
-
-      # TODO: ensure XML is a valid rss
-      # TODO: implement XML parsing
-      # TODO: add posts to the DB
-
-      {:ok, %{status: 404}} ->
-        Logger.info("[feed][worker] content not found: #{source.url}")
+          false ->
+            Logger.info("[feed][worker] is RSS invalid")
+        end
 
       {:error, reason} ->
-        Logger.info("[feed][worker] content not found: #{inspect(reason)}")
+        Logger.error("[feed][worker] failed to fetch #{reason}")
     end
 
     schedule_fetch(source.interval)
@@ -51,15 +52,5 @@ defmodule ControlPlane.RSS.Feed.Worker do
     Logger.info("[feed][worker] scheduling next execution: #{next_execution}")
 
     Process.send_after(self(), :fetch, next_execution)
-  end
-
-  defp normalize_url(%Source{} = source) do
-    case source.url do
-      "http" <> _ ->
-        source.url
-
-      _ ->
-        "https://#{source.url}"
-    end
   end
 end
